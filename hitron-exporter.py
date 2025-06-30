@@ -2,8 +2,10 @@
 import requests
 import time
 import urllib3
-import prometheus_client
+import re
 from prometheus_client import start_http_server, Gauge
+from datetime import datetime
+
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 MODEM_IP = "192.168.100.1"
@@ -12,7 +14,7 @@ EXPORTER_PORT = 8000
 session = requests.Session()
 session.verify = False
 
-# Create Gauges
+# Gauges for all metrics
 gauges = {
     "downstream_power": Gauge("modem_downstream_power", "Downstream Power Level (dBmV)", ["channel"]),
     "downstream_snr": Gauge("modem_downstream_snr", "Downstream SNR (dB)", ["channel"]),
@@ -23,9 +25,25 @@ gauges = {
     "ofdm_snr": Gauge("modem_ofdm_snr", "OFDM Downstream SNR/MER (dB)", ["channel"]),
     "ofdm_correctable": Gauge("modem_ofdm_correctable", "OFDM Correctable Codewords", ["channel"]),
     "ofdm_uncorrectable": Gauge("modem_ofdm_uncorrectable", "OFDM Uncorrectable Codewords", ["channel"]),
-    "uptime": Gauge("modem_uptime", "Exporter scrape timestamp"),
-    "system_time": Gauge("modem_system_time", "Exporter scrape timestamp")
+    "modem_uptime": Gauge("modem_uptime", "Modem uptime in seconds"),
+    "modem_system_time": Gauge("modem_system_time", "Modem system time (unix timestamp)")
 }
+
+def parse_uptime(uptime_str):
+    uptime_str = uptime_str.strip()
+    match = re.match(r"(\d+)h:(\d+)m:(\d+)s", uptime_str)
+    if match:
+        hours, minutes, seconds = map(int, match.groups())
+        return hours * 3600 + minutes * 60 + seconds
+    return 0
+
+def parse_system_time(system_time_str):
+    """Convert 'Sun Jun 29, 2025, 18:40:40' to unix timestamp."""
+    try:
+        dt = datetime.strptime(system_time_str.strip(), "%a %b %d, %Y, %H:%M:%S")
+        return int(dt.timestamp())
+    except Exception:
+        return 0
 
 def scrape():
     # Downstream Bonded
@@ -56,13 +74,21 @@ def scrape():
         if ch.get("uncorrect", "NA") != "NA":
             gauges["ofdm_uncorrectable"].labels(channel=ch_index).set(float(ch["uncorrect"]))
 
-    # Uptime & System Time (we just record scrape timestamp since modem doesn't give uptime)
-    ts = time.time()
-    gauges["uptime"].set(ts)
-    gauges["system_time"].set(ts)
+    # System uptime/system time (correct endpoint!)
+    try:
+        sysinfo = session.get(f"https://{MODEM_IP}/data/getSysInfo.asp").json()
+    except Exception:
+        sysinfo = []
+
+    if sysinfo and isinstance(sysinfo, list):
+        info = sysinfo[0]
+        uptime_str = info.get("systemUptime", "")
+        system_time_str = info.get("systemTime", "")
+        # Export as Prometheus gauges
+        gauges["modem_uptime"].set(parse_uptime(uptime_str))
+        gauges["modem_system_time"].set(parse_system_time(system_time_str))
 
 def main():
-    print(f"Starting exporter on port {EXPORTER_PORT}")
     start_http_server(EXPORTER_PORT)
     while True:
         scrape()
