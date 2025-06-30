@@ -11,7 +11,7 @@
     {
       "type": "table",
       "title": "Downstream Bonded Channels",
-      "datasource": "Prometheus",
+      "datasource": "prometheus",
       "targets": [
         {
           "expr": "modem_downstream_power",
@@ -42,7 +42,7 @@
     {
       "type": "table",
       "title": "Upstream Bonded Channels",
-      "datasource": "Prometheus",
+      "datasource": "prometheus",
       "targets": [
         {
           "expr": "modem_upstream_power",
@@ -58,7 +58,7 @@
     {
       "type": "table",
       "title": "OFDM Channels",
-      "datasource": "Prometheus",
+      "datasource": "prometheus",
       "targets": [
         {
           "expr": "modem_ofdm_power",
@@ -89,7 +89,7 @@
     {
       "type": "timeseries",
       "title": "Downstream Power",
-      "datasource": "Prometheus",
+      "datasource": "prometheus",
       "targets": [
         {
           "expr": "modem_downstream_power",
@@ -102,7 +102,7 @@
     {
       "type": "timeseries",
       "title": "Downstream SNR",
-      "datasource": "Prometheus",
+      "datasource": "prometheus",
       "targets": [
         {
           "expr": "modem_downstream_snr",
@@ -115,7 +115,7 @@
     {
       "type": "timeseries",
       "title": "Upstream Power",
-      "datasource": "Prometheus",
+      "datasource": "prometheus",
       "targets": [
         {
           "expr": "modem_upstream_power",
@@ -128,7 +128,7 @@
     {
       "type": "stat",
       "title": "Modem Uptime",
-      "datasource": "Prometheus",
+      "datasource": "prometheus",
       "targets": [
         {
           "expr": "modem_uptime",
