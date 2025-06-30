@@ -1,0 +1,167 @@
+{
+  "id": null,
+  "uid": "hitron-coda56",
+  "title": "Hitron CODA56 Modem Dashboard",
+  "tags": ["hitron", "modem", "exporter"],
+  "timezone": "browser",
+  "schemaVersion": 40,
+  "version": 1,
+  "refresh": "30s",
+  "panels": [
+    {
+      "type": "table",
+      "title": "Downstream Bonded Channels",
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "modem_downstream_power",
+          "refId": "A",
+          "legendFormat": "{{channel}} Power"
+        },
+        {
+          "expr": "modem_downstream_snr",
+          "refId": "B",
+          "legendFormat": "{{channel}} SNR"
+        },
+        {
+          "expr": "modem_downstream_correctables",
+          "refId": "C",
+          "legendFormat": "{{channel}} Correctables"
+        },
+        {
+          "expr": "modem_downstream_uncorrectables",
+          "refId": "D",
+          "legendFormat": "{{channel}} Uncorrectables"
+        }
+      ],
+      "options": {
+        "showHeader": true
+      },
+      "gridPos": {"x": 0, "y": 0, "w": 24, "h": 8}
+    },
+    {
+      "type": "table",
+      "title": "Upstream Bonded Channels",
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "modem_upstream_power",
+          "refId": "A",
+          "legendFormat": "{{channel}} Power"
+        }
+      ],
+      "options": {
+        "showHeader": true
+      },
+      "gridPos": {"x": 0, "y": 8, "w": 24, "h": 6}
+    },
+    {
+      "type": "table",
+      "title": "OFDM Channels",
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "modem_ofdm_power",
+          "refId": "A",
+          "legendFormat": "{{channel}} Power"
+        },
+        {
+          "expr": "modem_ofdm_snr",
+          "refId": "B",
+          "legendFormat": "{{channel}} SNR"
+        },
+        {
+          "expr": "modem_ofdm_correctable",
+          "refId": "C",
+          "legendFormat": "{{channel}} Correctables"
+        },
+        {
+          "expr": "modem_ofdm_uncorrectable",
+          "refId": "D",
+          "legendFormat": "{{channel}} Uncorrectables"
+        }
+      ],
+      "options": {
+        "showHeader": true
+      },
+      "gridPos": {"x": 0, "y": 14, "w": 24, "h": 6}
+    },
+    {
+      "type": "timeseries",
+      "title": "Downstream Power",
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "modem_downstream_power",
+          "refId": "A",
+          "legendFormat": "Channel {{channel}}"
+        }
+      ],
+      "gridPos": {"x": 0, "y": 20, "w": 24, "h": 8}
+    },
+    {
+      "type": "timeseries",
+      "title": "Downstream SNR",
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "modem_downstream_snr",
+          "refId": "A",
+          "legendFormat": "Channel {{channel}}"
+        }
+      ],
+      "gridPos": {"x": 0, "y": 28, "w": 24, "h": 8}
+    },
+    {
+      "type": "timeseries",
+      "title": "Upstream Power",
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "modem_upstream_power",
+          "refId": "A",
+          "legendFormat": "Channel {{channel}}"
+        }
+      ],
+      "gridPos": {"x": 0, "y": 36, "w": 24, "h": 8}
+    },
+    {
+      "type": "stat",
+      "title": "Modem Uptime",
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "modem_uptime",
+          "refId": "A"
+        }
+      ],
+      "options": {
+        "reduceOptions": {
+          "calcs": ["last"],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "horizontal",
+        "textMode": "value",
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s",
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {"color": "green", "value": null},
+              {"color": "red", "value": 0}
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {"x": 0, "y": 44, "w": 12, "h": 4}
+    }
+  ]
+}
