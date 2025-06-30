@@ -27,13 +27,13 @@ This exporter collects DOCSIS metrics from a Hitron CODA56 modem and exposes the
 
 ## 🌐 Endpoints Queried
 
-| Endpoint                        | Purpose                         |
-|---------------------------------|---------------------------------|
-| `/data/dsinfo.asp`              | Downstream bonded channels      |
-| `/data/usinfo.asp`              | Upstream bonded channels        |
-| `/data/dsofdminfo.asp`          | Downstream OFDM channels        |
-| `/data/usofdminfo.asp`          | Upstream OFDMA channels         |
-| `/data/getCmDocsisWan.asp`      | WAN configuration               |
+| Endpoint                   | Purpose                      |
+|----------------------------|------------------------------|
+| `/data/dsinfo.asp`         | Downstream bonded channels  |
+| `/data/usinfo.asp`         | Upstream bonded channels    |
+| `/data/dsofdminfo.asp`     | Downstream OFDM channels    |
+| `/data/usofdminfo.asp`     | Upstream OFDMA channels     |
+| `/data/getCmDocsisWan.asp` | WAN configuration           |
 
 > **Note:** No login credentials are required.
 
@@ -97,14 +97,78 @@ Exporter runs by default on port `8000` at `/metrics`.
 
 ---
 
+## 🛠️ Running as a Service
+
+To have the exporter start automatically on boot with `systemd`:
+
+Create a unit file at `/etc/systemd/system/hitron-exporter.service`:
+
+```ini
+[Unit]
+Description=Hitron CODA56 Prometheus Exporter
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 /usr/bin/hitron-exporter.py
+WorkingDirectory=/usr/bin
+User=root
+Group=root
+Restart=always
+RestartSec=10
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=hitron-exporter
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Then run:
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable hitron-exporter.service
+sudo systemctl start hitron-exporter.service
+```
+
+Check status:
+
+```bash
+sudo systemctl status hitron-exporter.service
+```
+
+View logs:
+
+```bash
+journalctl -u hitron-exporter.service -f
+```
+
+---
+
 ## 📊 Prometheus Configuration
 
-Add this job to your Prometheus `prometheus.yml`:
+Add this job to your `prometheus.yml`:
 
 ```yaml
-- job_name: 'hitron_coda56'
-  static_configs:
-    - targets: ['localhost:8000']
+  - job_name: hitron_modem
+    honor_timestamps: true
+    track_timestamps_staleness: false
+    scrape_interval: 15s
+    scrape_timeout: 10s
+    scrape_protocols:
+      - OpenMetricsText1.0.0
+      - OpenMetricsText0.0.1
+      - PrometheusText0.0.4
+    metrics_path: /metrics
+    scheme: http
+    enable_compression: true
+    follow_redirects: true
+    enable_http2: true
+    static_configs:
+      - targets:
+          - localhost:8000
 ```
 
 ---
