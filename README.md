@@ -90,7 +90,7 @@ modem_ofdm_snr{channel="1"} 39
 3. Run the exporter:
 
    ```bash
-   python exporter.py
+   python hitron-exporter.py
    ```
 
 Exporter runs by default on port `8000` at `/metrics`.
