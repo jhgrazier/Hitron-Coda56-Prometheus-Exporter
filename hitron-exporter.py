@@ -3,7 +3,7 @@ import requests
 import time
 import urllib3
 import re
-from prometheus_client import start_http_server, Gauge
+from prometheus_client import start_http_server, Gauge, Info
 from datetime import datetime
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -29,6 +29,9 @@ gauges = {
     "modem_system_time": Gauge("modem_system_time", "Modem system time (unix timestamp)")
 }
 
+# Info metric for pretty string uptime
+uptime_info = Info("modem_uptime_str", "Modem uptime as string")
+
 def parse_uptime(uptime_str):
     uptime_str = uptime_str.strip()
     match = re.match(r"(\d+)h:(\d+)m:(\d+)s", uptime_str)
@@ -38,7 +41,6 @@ def parse_uptime(uptime_str):
     return 0
 
 def parse_system_time(system_time_str):
-    """Convert 'Sun Jun 29, 2025, 18:40:40' to unix timestamp."""
     try:
         dt = datetime.strptime(system_time_str.strip(), "%a %b %d, %Y, %H:%M:%S")
         return int(dt.timestamp())
@@ -87,6 +89,9 @@ def scrape():
         # Export as Prometheus gauges
         gauges["modem_uptime"].set(parse_uptime(uptime_str))
         gauges["modem_system_time"].set(parse_system_time(system_time_str))
+        # Export the string version (for text panel)
+        if uptime_str:
+            uptime_info.info({'uptime': uptime_str})
 
 def main():
     start_http_server(EXPORTER_PORT)
