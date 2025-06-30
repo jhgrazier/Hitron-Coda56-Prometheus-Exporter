@@ -1,137 +1,318 @@
 {
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
   "id": null,
-  "uid": "hitron-coda56",
-  "title": "Hitron CODA56 Modem Dashboard",
-  "tags": ["hitron", "modem", "exporter"],
-  "timezone": "browser",
-  "schemaVersion": 40,
-  "version": 1,
-  "refresh": "30s",
+  "links": [],
   "panels": [
     {
-      "type": "table",
-      "title": "Downstream Bonded Channels",
       "datasource": "prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "expr": "modem_downstream_power",
-          "refId": "A",
-          "legendFormat": "{{channel}} Power"
+          "legendFormat": "{{channel}} Power",
+          "refId": "A"
         },
         {
           "expr": "modem_downstream_snr",
-          "refId": "B",
-          "legendFormat": "{{channel}} SNR"
+          "legendFormat": "{{channel}} SNR",
+          "refId": "B"
         },
         {
           "expr": "modem_downstream_correctables",
-          "refId": "C",
-          "legendFormat": "{{channel}} Correctables"
+          "legendFormat": "{{channel}} Correctables",
+          "refId": "C"
         },
         {
           "expr": "modem_downstream_uncorrectables",
-          "refId": "D",
-          "legendFormat": "{{channel}} Uncorrectables"
+          "legendFormat": "{{channel}} Uncorrectables",
+          "refId": "D"
         }
       ],
-      "options": {
-        "showHeader": true
-      },
-      "gridPos": {"x": 0, "y": 0, "w": 24, "h": 8}
+      "title": "Downstream Bonded Channels",
+      "type": "table"
     },
     {
-      "type": "table",
-      "title": "Upstream Bonded Channels",
       "datasource": "prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 24,
+        "x": 0,
+        "y": 8
+      },
+      "id": 2,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "expr": "modem_upstream_power",
-          "refId": "A",
-          "legendFormat": "{{channel}} Power"
+          "legendFormat": "{{channel}} Power",
+          "refId": "A"
         }
       ],
-      "options": {
-        "showHeader": true
-      },
-      "gridPos": {"x": 0, "y": 8, "w": 24, "h": 6}
+      "title": "Upstream Bonded Channels",
+      "type": "table"
     },
     {
-      "type": "table",
-      "title": "OFDM Channels",
       "datasource": "prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 24,
+        "x": 0,
+        "y": 14
+      },
+      "id": 3,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "expr": "modem_ofdm_power",
-          "refId": "A",
-          "legendFormat": "{{channel}} Power"
+          "legendFormat": "{{channel}} Power",
+          "refId": "A"
         },
         {
           "expr": "modem_ofdm_snr",
-          "refId": "B",
-          "legendFormat": "{{channel}} SNR"
+          "legendFormat": "{{channel}} SNR",
+          "refId": "B"
         },
         {
           "expr": "modem_ofdm_correctable",
-          "refId": "C",
-          "legendFormat": "{{channel}} Correctables"
+          "legendFormat": "{{channel}} Correctables",
+          "refId": "C"
         },
         {
           "expr": "modem_ofdm_uncorrectable",
-          "refId": "D",
-          "legendFormat": "{{channel}} Uncorrectables"
+          "legendFormat": "{{channel}} Uncorrectables",
+          "refId": "D"
         }
       ],
-      "options": {
-        "showHeader": true
-      },
-      "gridPos": {"x": 0, "y": 14, "w": 24, "h": 6}
+      "title": "OFDM Channels",
+      "type": "table"
     },
     {
-      "type": "timeseries",
-      "title": "Downstream Power",
       "datasource": "prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 20
+      },
+      "id": 4,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "expr": "modem_downstream_power",
-          "refId": "A",
-          "legendFormat": "Channel {{channel}}"
+          "legendFormat": "Channel {{channel}}",
+          "refId": "A"
         }
       ],
-      "gridPos": {"x": 0, "y": 20, "w": 24, "h": 8}
+      "title": "Downstream Power (Chart)",
+      "type": "timeseries"
     },
     {
-      "type": "timeseries",
-      "title": "Downstream SNR",
       "datasource": "prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 28
+      },
+      "id": 5,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "expr": "modem_downstream_snr",
-          "refId": "A",
-          "legendFormat": "Channel {{channel}}"
+          "legendFormat": "Channel {{channel}}",
+          "refId": "A"
         }
       ],
-      "gridPos": {"x": 0, "y": 28, "w": 24, "h": 8}
+      "title": "Downstream SNR (Chart)",
+      "type": "timeseries"
     },
     {
-      "type": "timeseries",
-      "title": "Upstream Power",
       "datasource": "prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 36
+      },
+      "id": 6,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "expr": "modem_upstream_power",
-          "refId": "A",
-          "legendFormat": "Channel {{channel}}"
+          "legendFormat": "Channel {{channel}}",
+          "refId": "A"
         }
       ],
-      "gridPos": {"x": 0, "y": 36, "w": 24, "h": 8}
+      "title": "Upstream Power (Chart)",
+      "type": "timeseries"
     },
     {
       "type": "stat",
-      "title": "Modem Uptime",
+      "title": "Modem Uptime (days)",
       "datasource": "prometheus",
       "targets": [
         {
-          "expr": "modem_uptime",
+          "expr": "modem_uptime/86400",
           "refId": "A"
         }
       ],
@@ -149,7 +330,7 @@
       },
       "fieldConfig": {
         "defaults": {
-          "unit": "s",
+          "unit": "d",
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -161,7 +342,67 @@
         },
         "overrides": []
       },
-      "gridPos": {"x": 0, "y": 44, "w": 12, "h": 4}
+      "gridPos": {"x": 0, "y": 44, "w": 12, "h": 4},
+      "id": 7
+    },
+    {
+      "type": "table",
+      "title": "Modem Uptime (string)",
+      "id": 8,
+      "datasource": "prometheus",
+      "pluginVersion": "12.0.2",
+      "targets": [
+        {
+          "expr": "modem_uptime_str_info",
+          "refId": "A"
+        }
+      ],
+      "options": {
+        "showHeader": true,
+        "footer": {
+          "show": false,
+          "countRows": false
+        },
+        "cellHeight": "sm"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 12,
+        "x": 12,
+        "y": 44
+      }
     }
-  ]
+  ],
+  "preload": false,
+  "refresh": "30s",
+  "schemaVersion": 41,
+  "tags": [
+    "hitron",
+    "modem",
+    "exporter"
+  ],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Hitron CODA56 Modem Dashboard",
+  "uid": "hitron-coda56",
+  "version": 6
 }
