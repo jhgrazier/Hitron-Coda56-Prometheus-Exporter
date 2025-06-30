@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 import requests
 import time
+import urllib3
 import prometheus_client
 from prometheus_client import start_http_server, Gauge
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 MODEM_IP = "192.168.100.1"
 EXPORTER_PORT = 8000
