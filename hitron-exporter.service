@@ -1,10 +1,19 @@
 [Unit]
-Description="Start Hitron exporter after network is loaded"
-After=network.target
+Description=Hitron CODA56 Prometheus Exporter
+After=network-online.target
+Wants=network-online.target
+
 [Service]
+Type=simple
+ExecStart=/usr/bin/python3 /usr/bin/hitron-exporter.py
+WorkingDirectory=/usr/bin
 User=root
 Group=root
-Type=simple
-ExecStart=python /usr/bin/hitron-exporter.py
+Restart=always
+RestartSec=10
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=hitron-exporter
+
 [Install]
 WantedBy=multi-user.target
